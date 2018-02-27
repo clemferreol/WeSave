@@ -1,17 +1,29 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld/>
+    <Login v-if="!user" @login="login"/>
+    <Chat :user="user" v-if="user"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+import Login from './components/Login'
+import Chat from './components/Chat'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Login,
+    Chat
+  },
+  data(){
+    return{
+      user:null
+    }
+  },
+  methods:{
+    login(user){
+      this.user = user
+    }
   }
 }
 </script>
@@ -21,7 +33,7 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  text-align: left;
   color: #2c3e50;
   margin-top: 60px;
 }
