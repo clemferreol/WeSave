@@ -2,32 +2,34 @@
 <div class="message">
 	<div class="nav-message"><p class="title-message">Prénom</p></div>
     <ul>
-      <li class="him">By Other User</li>
-      <li class="me">By this User, first message</li>
-      <li class="me">By this User, secondmessage</li>
-      <li class="me">By this User, third message</li>
-      <li class="me">By this User, fourth message</li>
-      <li class="him">By Other User</li>
-      <li class="me">By this User, first message</li>
-      <li class="me">By this User, secondmessage</li>
-      <li class="me">By this User, third message</li>
-      <li class="me">By this User, fourth message</li>
-      <li class="him">By Other User</li>
-      <li class="me">By this User, first message</li>
-      <li class="me">By this User, secondmessage</li>
-      <li class="me">By this User, third message</li>
-      <li class="me">By this User, fourth message</li>
+      <li class="me" v-for="(message, index) in messages">{{message.title }}</li>
     </ul>
-    <input type="text" placeholder="Écrivez un message..." />
+    <form v-on:submit.prevent="sendMessage()">
+      <input v-model="newMessage" type="text" placeholder="Écrivez un message..." />
+      <button class="waves-effect waves-light btn">Envoyer</i></button>
+    </form>
 </div>
 </template>
 
 <script>
 export default {
 	name: 'Message',
+  data () {
+    return{
+      messages : [],
+      newMessage:''
+    }
+  },
     props : {
         user : { type: Object, required : true }
     },
+
+    methods : {
+        sendMessage : function() {
+        let text = this.newMessage.trim();
+        this.messages.push({title: text});
+        },
+     }
 }
 </script>
 <style scoped>
@@ -35,6 +37,7 @@ export default {
     width:100%;
     border: 1px solid gray;
     height: 800px;
+    min-height: 800px;
     display: inline-block;
     overflow:auto;
 }
@@ -64,6 +67,14 @@ ul li{
   font-family: Helvetica, Arial, sans-serif;
 }
 
+li:first-child{
+  margin-top: 60px;
+}
+
+li:last-child{
+  margin-bottom: 60px;
+}
+
 .him{
   background: #eee;
   float: left;
@@ -89,10 +100,26 @@ ul li{
 }
 
 input{
-    margin-bottom: 0;
-    float: left;
-    width: 100%;
+    display: inline-block;
+    /*margin-top: 620px;*/
+    position: fixed;
+    bottom: 0;
+    border-top: 1px gray solid;
+    border-right: none;
+    border-left: none;
+    width: 60%;
     height: 50px;
+
+}
+
+.btn{
+  display: inline-block;
+  margin-bottom: 2px;
+  margin-left: -50px;
+  height: 50px;
+  width: 8%;
+  color:#0283FF;
+
 }
 
 </style>
