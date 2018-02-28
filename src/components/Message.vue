@@ -1,8 +1,8 @@
 <template>
 <div class="message">
 	<div class="nav-message"><p class="title-message">Prénom</p></div>
-    <ul>
-      <li class="me" v-for="(message, index) in messages">{{message.title }}</li>
+    <ul >
+        <li v-for="(message, index) in messages" :class="(currentUser.firstname === message.name ? 'me':'him')">{{message.msg }}</li>
     </ul>
     <form v-on:submit.prevent="sendMessage()">
       <input v-model="newMessage" type="text" placeholder="Écrivez un message..." />
@@ -13,23 +13,35 @@
 
 <script>
 export default {
+
 	name: 'Message',
+  props : {
+      user : { type: Object, required : true }
+  },
   data () {
     return{
       messages : [],
-      newMessage:''
+      newMessage:'',
+      currentUser: this.user
     }
   },
-    props : {
-        user : { type: Object, required : true }
-    },
 
     methods : {
         sendMessage : function() {
         let text = this.newMessage.trim();
-        this.messages.push({title: text});
+        this.messages.push({name: this.currentUser.firstname, msg: text});
+        sessionStorage.setItem('messages',JSON.stringify(this.messages));
         },
-     }
+     },
+     created() {
+        this.messages =  JSON.parse(sessionStorage.getItem('messages'));
+      },
+      watch: {
+      getMessage: function () {
+        this.messages =  JSON.parse(sessionStorage.getItem('messages'));
+      }
+    }
+
 }
 </script>
 <style scoped>
